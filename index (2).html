@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can You Identify RE-AIM?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#185FA5;--accent-light:#EBF2FB;--accent-dark:#0C447C;
+  --text-primary:#1E1D1B;--text-secondary:#5A5855;--text-muted:#8A8880;
+  --border:#DEDAD2;--bg:#F7F6F3;--surface:#FFFFFF;
+  --slate-100:#ECEAE4;--slate-200:#D8D5CC;--slate-300:#C8C6BC;
+  --green-bg:#EAF3DE;--green-border:#C0DD97;--green-text:#27500A;
+  --amber-bg:#FAEEDA;--amber-border:#FAC775;--amber-text:#633806;
+  --red-bg:#FCEBEB;--red-border:#F7C1C1;--red-text:#791F1F;
+  --radius-sm:6px;--radius-md:10px;--radius-lg:16px;--radius-xl:22px;
+}
+html{font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;line-height:1.6}
+
+/* ── VIEWS ── */
+.view{display:none!important}
+.view.active{display:flex!important}
+
+/* ══════════════════════════════
+   LANDING PAGE
+══════════════════════════════ */
+#landing{
+  min-height:100vh;
+  flex-direction:column;
+}
+.landing-header{
+  padding:2rem 3rem 0;
+  display:flex;flex-direction:column;gap:.35rem;
+}
+.landing-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);
+}
+.landing-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.8rem,3.5vw,2.6rem);
+  font-weight:400;line-height:1.15;
+  letter-spacing:-.02em;color:var(--text-primary);
+}
+.landing-sub{
+  font-size:15px;color:var(--text-secondary);line-height:1.7;
+  max-width:560px;margin-top:.5rem;
+}
+.landing-body{
+  flex:1;padding:2rem 3rem 3rem;
+}
+.program-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;margin-top:1.5rem;
+}
+.program-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xl);
+  padding:1.75rem 1.5rem 1.5rem;
+  cursor:pointer;
+  transition:border-color .2s,box-shadow .2s,transform .15s;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.program-card:hover{
+  border-color:var(--accent);
+  box-shadow:0 4px 20px rgba(24,95,165,.12);
+  transform:translateY(-2px);
+}
+.program-card:active{transform:translateY(0)}
+.prog-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.prog-num{
+  position:absolute;top:1.25rem;right:1.25rem;
+  font-size:11px;font-weight:600;letter-spacing:.06em;
+  color:var(--text-muted);text-transform:uppercase;
+}
+.prog-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;font-weight:400;line-height:1.3;
+  color:var(--text-primary);
+}
+.prog-desc{
+  font-size:13px;color:var(--text-secondary);line-height:1.65;flex:1;
+}
+.prog-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;color:var(--accent);
+  margin-top:.25rem;
+}
+.prog-tag{
+  display:inline-block;font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;
+  color:var(--accent);background:var(--accent-light);
+}
+
+/* Card accent strip */
+.program-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:var(--radius-xl) var(--radius-xl) 0 0;
+  opacity:0;transition:opacity .2s;
+}
+.program-card:hover::before{opacity:1}
+.prog-color-1::before{background:#185FA5}
+.prog-color-2::before{background:#1D9E75}
+.prog-color-3::before{background:#D85A30}
+.prog-color-4::before{background:#BA7517}
+
+.prog-icon-1{background:#EBF2FB;color:#185FA5}
+.prog-icon-2{background:#E1F5EE;color:#0F6E56}
+.prog-icon-3{background:#FAECE7;color:#993C1D}
+.prog-icon-4{background:#FAEEDA;color:#854F0B}
+
+/* ══════════════════════════════
+   ACTIVITY PAGE
+══════════════════════════════ */
+#activity{flex-direction:column;min-height:100vh}
+
+.activity-header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:.9rem 2rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;
+}
+.activity-header h1{
+  font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;
+  letter-spacing:-.01em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;color:var(--text-secondary);
+  background:transparent;border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:7px 14px;cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.back-btn:hover{background:var(--slate-100);color:var(--text-primary)}
+.prog-pill{
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  padding:3px 10px;border-radius:99px;flex-shrink:0;
+}
+
+.activity-body{
+  flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
+}
+.left-col{
+  background:var(--surface);border-right:1px solid var(--border);
+  overflow-y:auto;padding:2rem;display:flex;flex-direction:column;gap:1.5rem;
+}
+.right-col{background:var(--bg);overflow-y:auto;padding:2rem}
+
+/* ── Scenario text ── */
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.65rem}
+.scenario-body p{font-size:15px;line-height:1.85;color:var(--text-primary);margin-bottom:1rem}
+.scenario-body p:last-child{margin-bottom:0}
+hr.divider{border:none;border-top:1px solid var(--border)}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;border-radius:var(--radius-md);cursor:pointer;transition:all .16s;border:1px solid transparent}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn-outline{background:var(--surface);color:var(--text-primary);border-color:var(--border)}
+.btn-outline:hover{background:var(--slate-100)}
+.btn-outline:disabled{opacity:.35;cursor:default;pointer-events:none}
+.btn-ghost{background:transparent;color:var(--accent);border:1px solid var(--accent-light);padding:8px 14px;font-size:13px}
+.btn-ghost:hover{background:var(--accent-light)}
+.btn-restart{background:var(--slate-100);color:var(--text-primary);border-color:var(--border)}
+.btn-restart:hover{background:var(--slate-200)}
+
+/* ── Progress ── */
+.progress-wrap{margin-bottom:1rem}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-muted);margin-bottom:5px}
+.progress-track{height:4px;background:var(--slate-100);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;border-radius:99px;transition:width .4s ease}
+.step-dots{display:flex;gap:6px;align-items:center}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--slate-300);transition:background .3s,transform .2s}
+.step-dot.active{transform:scale(1.3)}
+.step-dot.done{background:#639922}
+
+/* ── Question card ── */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.dim-definition{border-bottom:1px solid;padding:1rem 1.25rem;display:flex;gap:12px;align-items:flex-start}
+.dim-def-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:600;color:#fff;margin-top:1px}
+.dim-def-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.dim-def-body{font-size:13px;line-height:1.65}
+.q-card-body{padding:1.25rem 1.5rem}
+.dim-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:.65rem}
+.q-text{font-family:'DM Serif Display',serif;font-size:1.15rem;font-weight:400;color:var(--text-primary);margin-bottom:.65rem;line-height:1.4}
+.hint-text{font-size:13px;color:var(--text-muted);line-height:1.65;padding:.55rem .75rem;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:.85rem}
+.hint-text strong{color:var(--text-secondary)}
+
+textarea{width:100%;min-height:100px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-primary);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);resize:vertical;line-height:1.65;transition:border-color .15s}
+textarea:focus{outline:none;border-color:var(--accent)}
+textarea::placeholder{color:var(--text-muted)}
+
+/* ── Action row ── */
+.action-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:.85rem 0}
+.action-row .spacer{flex:1}
+
+/* ── Feedback ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.feedback-box{border-radius:var(--radius-md);padding:.85rem 1rem;margin-top:.5rem;font-size:13.5px;line-height:1.7;animation:fadeIn .25s ease}
+.feedback-box.loading{background:var(--bg);border:1px solid var(--border);color:var(--text-muted);display:flex;align-items:center;gap:8px}
+.feedback-box.positive{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text)}
+.feedback-box.partial{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber-text)}
+.feedback-box.missing{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red-text)}
+.feedback-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem}
+
+/* ── Suggested answer ── */
+.answer-reveal{border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.9rem 1.1rem;margin-top:.6rem;animation:fadeIn .25s ease}
+.answer-reveal-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.35rem}
+.answer-reveal p{font-size:13.5px;line-height:1.75;color:var(--accent-dark)}
+
+/* ── Nav ── */
+.nav-row{display:flex;align-items:center;gap:8px;padding-top:.75rem;border-top:1px solid var(--border);margin-top:.75rem}
+.nav-row .spacer{flex:1}
+
+/* ── Reflection ── */
+.reflection-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+.reflection-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.reflection-header h2{font-family:'DM Serif Display',serif;font-size:1.15rem;font-weight:400}
+.check-circle{width:26px;height:26px;border-radius:50%;background:var(--green-bg);border:1px solid var(--green-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.complete-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-md);padding:.9rem 1.1rem;display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.complete-banner p{font-size:14px;color:var(--green-text)}
+.complete-banner strong{font-weight:600}
+.reflection-q{margin-bottom:1.25rem}
+.reflection-q .q-num{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);display:block;margin-bottom:.2rem}
+.reflection-q label{display:block;font-size:14px;font-weight:500;margin-bottom:.4rem;line-height:1.5}
+.reflection-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* ── Idle ── */
+.idle-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;gap:1rem;padding:2rem}
+.idle-icon{width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.idle-title{font-family:'DM Serif Display',serif;font-size:1.2rem}
+.idle-sub{font-size:14px;color:var(--text-secondary);max-width:260px;line-height:1.7}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--slate-300);border-radius:99px}
+
+@media(max-width:780px){
+  .activity-body{grid-template-columns:1fr;overflow:visible}
+  .left-col{border-right:none;border-bottom:1px solid var(--border)}
+  .activity-header{padding:.9rem 1.25rem}
+  .left-col,.right-col{padding:1.25rem}
+  .landing-header,.landing-body{padding-left:1.25rem;padding-right:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════
+     LANDING PAGE
+══════════════════════ -->
+<div id="landing" class="view active">
+  <div class="landing-header">
+    <div class="landing-eyebrow">Graduate Public Health · RE-AIM Framework</div>
+    <h1 class="landing-title">Can You Identify RE-AIM?</h1>
+    <p class="landing-sub">Select a program scenario below to begin. For each program, you will identify all five RE-AIM dimensions — Reach, Effectiveness, Adoption, Implementation, and Maintenance — using evidence from the text.</p>
+  </div>
+  <div class="landing-body">
+    <div class="eyebrow" style="margin-top:.5rem">Choose a program scenario</div>
+    <div class="program-grid">
+
+      <div class="program-card prog-color-1" onclick="launchActivity(0)">
+        <div class="prog-icon prog-icon-1">🧼</div>
+        <span class="prog-num">01</span>
+        <div>
+          <div class="prog-title">School Handwashing Program</div>
+          <div class="prog-desc">A district-wide handwashing initiative introduced in 18 primary schools to address ongoing concerns about diarrheal illness among children.</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="prog-tag" style="background:#EBF2FB;color:#185FA5">School health</span>
+          <span class="prog-cta">Begin <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+      <div class="program-card prog-color-2" onclick="launchActivity(1)">
+        <div class="prog-icon prog-icon-2">👶</div>
+        <span class="prog-num">02</span>
+        <div>
+          <div class="prog-title">Postpartum Home Visit Program</div>
+          <div class="prog-desc">Community health workers trained to conduct home visits in the first week after birth to support maternal and newborn health.</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="prog-tag" style="background:#E1F5EE;color:#0F6E56">Maternal health</span>
+          <span class="prog-cta">Begin <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+      <div class="program-card prog-color-3" onclick="launchActivity(2)">
+        <div class="prog-icon prog-icon-3">💉</div>
+        <span class="prog-num">03</span>
+        <div>
+          <div class="prog-title">HPV Vaccination Outreach</div>
+          <div class="prog-desc">A multi-site outreach program to increase HPV vaccine uptake among adolescents ages 11–14 through schools, clinics, and community events.</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="prog-tag" style="background:#FAECE7;color:#993C1D">Adolescent health</span>
+          <span class="prog-cta">Begin <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+      <div class="program-card prog-color-4" onclick="launchActivity(3)">
+        <div class="prog-icon prog-icon-4">🏠</div>
+        <span class="prog-num">04</span>
+        <div>
+          <div class="prog-title">Radon Testing & Mitigation Outreach</div>
+          <div class="prog-desc">A public health campaign using free test kits, workshops, and community partnerships to increase household radon testing and mitigation.</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="prog-tag" style="background:#FAEEDA;color:#854F0B">Environmental health</span>
+          <span class="prog-cta">Begin <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════
+     ACTIVITY PAGE
+══════════════════════ -->
+<div id="activity" class="view">
+
+  <header class="activity-header">
+    <button class="back-btn" onclick="goToLanding()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All programs
+    </button>
+    <h1 id="activity-title">Program</h1>
+    <span class="prog-pill" id="activity-pill"></span>
+  </header>
+
+  <div class="activity-body">
+
+    <!-- LEFT -->
+    <div class="left-col">
+      <div>
+        <div class="eyebrow" id="scenario-eyebrow">Scenario</div>
+        <div class="scenario-body" id="scenario-text"></div>
+      </div>
+      <hr class="divider">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.45rem">Your task</div>
+        <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem">Read the scenario carefully. For each of the five RE-AIM dimensions, identify the specific evidence in the text and type your answer. Get feedback before revealing the suggested answer.</p>
+        <button class="btn btn-primary" id="begin-btn" onclick="startActivity()">
+          Begin activity
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col" id="right-col">
+
+      <div class="idle-state" id="idle-view">
+        <div class="idle-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8A8880" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="idle-title">Ready when you are</div>
+        <p class="idle-sub">Read the scenario on the left, then click "Begin activity" to start identifying each RE-AIM dimension.</p>
+      </div>
+
+      <div id="active-view" style="display:none">
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="prog-label">Question 1 of 5</span>
+            <div class="step-dots" id="step-dots"></div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="prog-fill" style="width:20%"></div>
+          </div>
+        </div>
+        <div id="q-area"></div>
+      </div>
+
+      <div id="reflection-view" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:1.25rem">
+          <div class="complete-banner">
+            <div class="check-circle">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p><strong>All five dimensions identified.</strong> Use the prompts below for group discussion.</p>
+          </div>
+          <div class="reflection-card">
+            <div class="reflection-header">
+              <h2>Group reflection</h2>
+            </div>
+            <div class="reflection-q">
+              <span class="q-num">Prompt 1</span>
+              <label>Which RE-AIM dimension was hardest to identify, and why?</label>
+              <textarea placeholder="Discuss as a group and note your reasoning..."></textarea>
+            </div>
+            <div class="reflection-q">
+              <span class="q-num">Prompt 2</span>
+              <label>What does this scenario show us that a simple "the program worked" statement would miss?</label>
+              <textarea placeholder="Think about equity, fidelity, and sustainability..."></textarea>
+            </div>
+            <div class="reflection-q">
+              <span class="q-num">Prompt 3</span>
+              <label>If you were redesigning the next phase, which RE-AIM dimension would you focus on first, and what would you change?</label>
+              <textarea placeholder="Justify your choice with evidence from the scenario..."></textarea>
+            </div>
+            <div class="reflection-actions">
+              <button class="btn btn-outline" onclick="goBackToQ()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Review questions
+              </button>
+              <button class="btn btn-restart" onclick="restartActivity()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Restart this program
+              </button>
+              <button class="btn btn-outline" onclick="goToLanding()" style="margin-left:auto">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Try another program
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   PROGRAM DATA
+═══════════════════════════════════════ */
+const PROGRAMS = [
+
+  /* ── 0: Handwashing ── */
+  {
+    title:"School Handwashing Program",
+    pill:"School health",
+    pillStyle:"background:#EBF2FB;color:#185FA5",
+    accentColor:"#185FA5",
+    accentLight:"#EBF2FB",
+    accentDark:"#0C447C",
+    eyebrow:"Scenario — School Handwashing Program",
+    scenario:`<p>A school-based handwashing program was introduced in 18 public primary schools after ongoing concerns about diarrheal illness among children. The program included teacher orientation, student hygiene lessons, posters near toilets and eating areas, monthly soap delivery, and installation of handwashing stations where feasible. During the first phase, 14 schools agreed to participate. School leaders in those sites generally expressed support, though several said they were unsure whether they could sustain the effort without outside help.</p>
+<p>After six months, observations suggested that handwashing before lunch had increased from 24% to 61% in participating schools. Teachers also reported that many students were better able to explain why handwashing mattered and when it should happen. Clinic records from the area suggested a modest decline in diarrhea-related visits among school-aged children during the pilot period, although those results varied across schools.</p>
+<p>At the same time, implementation was uneven. Three schools never fully installed the stations because water access remained unreliable. Several teachers said they skipped hygiene lessons during exam weeks because they were already stretched thin. Soap stock-outs were reported in five schools, making it difficult to maintain routines consistently. Families connected to the most poorly resourced schools said they had heard little about the program and were unsure whether their children's schools were fully involved. By the end of the pilot, staff in 10 of the 14 participating schools said they planned to continue the program even if outside funding ended. Eight months later, 7 schools were still refilling soap locally and had kept their handwashing stations functioning.</p>`,
+    dims:[
+      {label:"Reach",letter:"R",
+       definition:"Reach refers to the proportion and representativeness of individuals who participate in or are affected by an intervention. It asks: who was actually exposed to the program, and were any groups systematically left out or underserved?",
+       q:"What is the Reach of this intervention?",
+       hint:"Who was the intended population, and who actually received the program? Were any groups missed or underserved?",
+       answer:"Reach is reflected in the uneven awareness across the target population. Families connected to the most poorly resourced schools said they had heard little about the program and were unsure whether their children's schools were fully involved. This signals that the program did not reach all eligible children equally, particularly those in less-resourced settings.",
+       keywords:["remote","heard","families","uneven","poorly resourced","unsure","population","communities","access","underserved","missed","aware","involved"]},
+      {label:"Effectiveness",letter:"E",
+       definition:"Effectiveness refers to the impact of an intervention on important outcomes, including potential negative effects. It asks: did the program produce meaningful changes in behavior, knowledge, or health status among those who participated?",
+       q:"What is the Effectiveness of the program?",
+       hint:"What outcomes were observed among those who participated? Look for changes in behavior, knowledge, or health status.",
+       answer:"Effectiveness is shown in the increase in handwashing before lunch from 24% to 61% in participating schools over six months. Teachers also reported that students were better able to explain why and when handwashing mattered. Additionally, clinic records suggested a modest decline in diarrhea-related visits among school-aged children, though results varied across schools.",
+       keywords:["24","61","handwashing","diarrhea","decline","clinic","outcome","behavior","knowledge","impact","visits","rose","increased","explain","mattered"]},
+      {label:"Adoption",letter:"A",
+       definition:"Adoption refers to the uptake of an intervention by settings, institutions, or staff. It asks: which organizations or decision-makers chose to participate, and what proportion of all eligible sites were included?",
+       q:"What is the Adoption of the intervention?",
+       hint:"Which settings or organizations agreed to take up the program? Were all eligible sites included?",
+       answer:"Adoption is reflected in the fact that 14 of the 18 eligible primary schools agreed to participate in the first phase. School leaders in participating sites generally expressed support, though some were uncertain about sustaining the program without outside help. Four schools did not join the first phase.",
+       keywords:["14","18","schools","agreed","participated","leaders","support","uptake","sites","four","join","first phase"]},
+      {label:"Implementation",letter:"I",
+       definition:"Implementation refers to the consistency and fidelity with which an intervention is delivered as intended. It asks: were all program components carried out, by whom, with what completeness, and were there significant deviations?",
+       q:"What is the Implementation of the intervention?",
+       hint:"Was the program delivered as intended? Look for deviations, gaps, or inconsistencies in how components were carried out.",
+       answer:"Implementation was uneven across sites. Three schools never fully installed handwashing stations because water access was unreliable. Several teachers skipped hygiene lessons during exam weeks. Soap stock-outs were reported in five schools, making it difficult to maintain consistent routines. These gaps reflect significant variation in fidelity to the intended program design.",
+       keywords:["station","soap","skip","exam","stock-out","uneven","fidelity","installed","incomplete","water","unreliable","delivery","three","five","skipped","gaps"]},
+      {label:"Maintenance",letter:"M",
+       definition:"Maintenance refers to the extent to which a program is sustained over time at both the individual and organizational level. It asks: did the intervention continue beyond the pilot period, without reliance on outside funding or special support?",
+       q:"What is the Maintenance of the intervention?",
+       hint:"Did the program continue after the pilot? What evidence shows whether it was sustained over time?",
+       answer:"Maintenance is shown by staff in 10 of the 14 participating schools reporting they planned to continue the program even if outside funding ended. Eight months after the pilot, 7 schools were still refilling soap locally and keeping their handwashing stations functioning, indicating moderate sustained uptake at the site level.",
+       keywords:["continue","sustain","funding","10","seven","7","eight months","8 months","local","maintained","functioning","planned","still","refilling"]}
+    ]
+  },
+
+  /* ── 1: Postpartum ── */
+  {
+    title:"Postpartum Home Visit Program",
+    pill:"Maternal health",
+    pillStyle:"background:#E1F5EE;color:#0F6E56",
+    accentColor:"#1D9E75",
+    accentLight:"#E1F5EE",
+    accentDark:"#085041",
+    eyebrow:"Scenario — Postpartum Home Visit Program",
+    scenario:`<p>A postpartum home visit program was launched to improve maternal and newborn health during the first week after birth. Community health workers were trained to conduct home visits, assess warning signs, support breastfeeding, answer family questions, and refer mothers or newborns to clinics when concerns were identified. The program was rolled out through 12 health center service areas, though only 9 agreed to participate in the first phase. Some health center leaders were enthusiastic, while others hesitated because they were already short-staffed and uncertain whether they could take on additional responsibilities.</p>
+<p>During the first year, records showed that 68% of eligible mothers in participating service areas received at least one home visit within the first ten days after delivery. However, coverage was noticeably lower for mothers living farther from roads and for those who delivered at home rather than in facilities. Mothers who received visits often described feeling more confident about newborn care, breastfeeding, and recognizing postpartum danger signs. Health workers also reported that referrals for fever, excessive bleeding, and newborn feeding problems were being made earlier than before.</p>
+<p>Even with those gains, implementation challenges were common. Some community health workers said travel time made it difficult to complete visits on schedule. Others reported using shortened versions of the checklist when they had too many households to cover. Supervisors in some areas reviewed visit quality regularly, but in others supervision was inconsistent. By the end of the pilot, maternal health leaders in several participating areas argued that the program should be continued because families valued it and clinic staff were seeing earlier care-seeking. Still, some health centers questioned whether the model could continue unless transportation support and staffing were addressed. One year later, 6 of the 9 participating service areas were still conducting home visits as part of routine maternal and child health services.</p>`,
+    dims:[
+      {label:"Reach",letter:"R",
+       definition:"Reach refers to the proportion and representativeness of individuals who participate in or are affected by an intervention. It asks: who was actually exposed to the program, and were any groups systematically left out or underserved?",
+       q:"What is the Reach of this intervention?",
+       hint:"What proportion of eligible mothers received a visit? Were any groups less likely to be reached?",
+       answer:"Reach is captured by the finding that 68% of eligible mothers in participating service areas received at least one home visit within the first ten days after delivery. However, reach was uneven: coverage was noticeably lower for mothers living farther from roads and for those who delivered at home rather than in facilities, indicating that the most vulnerable groups were less likely to be reached.",
+       keywords:["68","eligible","mothers","road","home delivery","farther","lower","coverage","uneven","reach","received","visit","facility","remote","rural"]},
+      {label:"Effectiveness",letter:"E",
+       definition:"Effectiveness refers to the impact of an intervention on important outcomes, including potential negative effects. It asks: did the program produce meaningful changes in behavior, knowledge, or health status among those who participated?",
+       q:"What is the Effectiveness of the program?",
+       hint:"What outcomes were observed among mothers who received visits? Look for changes in confidence, behavior, or care-seeking.",
+       answer:"Effectiveness is shown by mothers reporting greater confidence in newborn care, breastfeeding, and recognizing postpartum danger signs after receiving visits. Health workers also reported that referrals for fever, excessive bleeding, and newborn feeding problems were being made earlier than before, suggesting improved care-seeking behavior as a result of the program.",
+       keywords:["confident","confidence","breastfeeding","danger signs","referral","fever","bleeding","earlier","care-seeking","newborn","outcome","improved","behavior","knowledge"]},
+      {label:"Adoption",letter:"A",
+       definition:"Adoption refers to the uptake of an intervention by settings, institutions, or staff. It asks: which organizations or decision-makers chose to participate, and what proportion of all eligible sites were included?",
+       q:"What is the Adoption of the intervention?",
+       hint:"How many of the eligible service areas agreed to participate? What motivated or limited their decision?",
+       answer:"Adoption is reflected in 9 of 12 eligible health center service areas agreeing to participate in the first phase. Some health center leaders were enthusiastic, while others hesitated because they were short-staffed and uncertain about taking on additional responsibilities. Three service areas did not join the initial phase.",
+       keywords:["9","12","health center","service area","agreed","participated","leaders","enthusiastic","hesitated","short-staffed","join","three","uptake"]},
+      {label:"Implementation",letter:"I",
+       definition:"Implementation refers to the consistency and fidelity with which an intervention is delivered as intended. It asks: were all program components carried out, by whom, with what completeness, and were there significant deviations?",
+       q:"What is the Implementation of the intervention?",
+       hint:"Was the program delivered as intended? Look for gaps in coverage, deviations in protocol, or inconsistencies in supervision.",
+       answer:"Implementation was inconsistent across sites. Some community health workers found it difficult to complete visits on schedule due to travel time. Others used shortened versions of the checklist when managing large caseloads. Supervision was regular in some areas but inconsistent in others, contributing to variation in the quality of visit delivery.",
+       keywords:["travel","schedule","shortened","checklist","supervision","inconsistent","fidelity","caseload","complete","difficult","delivery","gaps","uneven","quality"]},
+      {label:"Maintenance",letter:"M",
+       definition:"Maintenance refers to the extent to which a program is sustained over time at both the individual and organizational level. It asks: did the intervention continue beyond the pilot period, without reliance on outside funding or special support?",
+       q:"What is the Maintenance of the intervention?",
+       hint:"Did the program continue after the pilot ended? What conditions supported or threatened sustainability?",
+       answer:"Maintenance is shown by 6 of the 9 participating service areas continuing to conduct home visits as part of routine maternal and child health services one year after the pilot. However, some health centers questioned whether the model could continue without improvements to transportation support and staffing, highlighting conditions that threaten long-term sustainability.",
+       keywords:["6","nine","6 of 9","one year","routine","continue","sustainability","transportation","staffing","funding","still","conducting","maintained"]}
+    ]
+  },
+
+  /* ── 2: HPV ── */
+  {
+    title:"HPV Vaccination Outreach",
+    pill:"Adolescent health",
+    pillStyle:"background:#FAECE7;color:#993C1D",
+    accentColor:"#D85A30",
+    accentLight:"#FAECE7",
+    accentDark:"#4A1B0C",
+    eyebrow:"Scenario — HPV Vaccination Outreach Program",
+    scenario:`<p>An HPV vaccination outreach program was developed to increase vaccine uptake among adolescents ages 11 to 14. The program included school-based information sessions, parent education materials, provider reminder systems in local clinics, and community outreach events designed to address vaccine hesitancy. Of 20 eligible middle schools, 15 agreed to participate in the first year, and 8 of 10 pediatric clinics adopted the reminder system. Administrators who joined the program often described it as a useful way to improve preventive care, while those who declined cited staffing limitations, political sensitivity, or concern about parent pushback.</p>
+<p>Program surveys showed that parents who attended education sessions were more likely to report understanding the connection between HPV and cancer prevention. Vaccine initiation rates increased in participating schools and clinics, rising from 48% to 66% over the pilot year, though completion of the series remained lower than hoped. Gains were strongest in sites where providers consistently gave strong recommendations and where clinics offered flexible appointment options. In contrast, participation was lower among families with limited English proficiency and among families in communities where trust in health institutions was already weak.</p>
+<p>Implementation varied considerably across sites. Some schools held well-attended parent sessions and translated materials into multiple languages, while others distributed information only through email and struggled to reach caregivers directly. Several clinics said the reminder system worked well, but others reported that staff were too busy to consistently follow up with families. A few community outreach events were canceled when planned partners were unavailable. By the end of the year, several school administrators and clinic leaders expressed interest in continuing the program, especially where vaccination rates had improved noticeably. Even so, some participants questioned whether the outreach model could be sustained without dedicated coordination and funding.</p>`,
+    dims:[
+      {label:"Reach",letter:"R",
+       definition:"Reach refers to the proportion and representativeness of individuals who participate in or are affected by an intervention. It asks: who was actually exposed to the program, and were any groups systematically left out or underserved?",
+       q:"What is the Reach of this intervention?",
+       hint:"Who was intended to benefit, and who was less likely to be reached? Look for equity gaps in participation.",
+       answer:"Reach is reflected in the uneven participation across communities. Families with limited English proficiency and those in communities with low trust in health institutions were less likely to participate. This indicates that the program did not reach the full target population of adolescents ages 11 to 14 equally, with the most marginalized groups being harder to engage.",
+       keywords:["English proficiency","trust","weak","lower","participation","communities","marginalized","families","uneven","reach","target","adolescent","11","14","underserved"]},
+      {label:"Effectiveness",letter:"E",
+       definition:"Effectiveness refers to the impact of an intervention on important outcomes, including potential negative effects. It asks: did the program produce meaningful changes in behavior, knowledge, or health status among those who participated?",
+       q:"What is the Effectiveness of the program?",
+       hint:"What changed in vaccine rates or parent knowledge? Where were outcomes strongest and where did they fall short?",
+       answer:"Effectiveness is shown in the rise in vaccine initiation rates from 48% to 66% over the pilot year. Parents who attended education sessions were more likely to understand the link between HPV and cancer prevention. Outcomes were strongest where providers gave consistent recommendations and clinics offered flexible appointments. However, series completion remained lower than hoped, limiting the overall effectiveness of the intervention.",
+       keywords:["48","66","vaccine","initiation","completion","cancer","HPV","understanding","parents","outcome","rate","increase","knowledge","recommendation","flexible"]},
+      {label:"Adoption",letter:"A",
+       definition:"Adoption refers to the uptake of an intervention by settings, institutions, or staff. It asks: which organizations or decision-makers chose to participate, and what proportion of all eligible sites were included?",
+       q:"What is the Adoption of the intervention?",
+       hint:"How many schools and clinics agreed to take part? What did adopters and non-adopters say?",
+       answer:"Adoption is reflected in 15 of 20 eligible middle schools and 8 of 10 pediatric clinics joining the program. Administrators who participated described it as useful for improving preventive care. Those who declined cited staffing limitations, political sensitivity, or concern about parent pushback, illustrating varied institutional readiness to adopt the program.",
+       keywords:["15","20","8","10","schools","clinics","agreed","adopted","administrators","declined","staffing","political","parent pushback","preventive","joined"]},
+      {label:"Implementation",letter:"I",
+       definition:"Implementation refers to the consistency and fidelity with which an intervention is delivered as intended. It asks: were all program components carried out, by whom, with what completeness, and were there significant deviations?",
+       q:"What is the Implementation of the intervention?",
+       hint:"How consistently were program components delivered across sites? Where were there gaps or cancellations?",
+       answer:"Implementation varied considerably across sites. Some schools held well-attended parent sessions and translated materials into multiple languages, while others relied on email alone and struggled to reach caregivers. Several clinics reported the reminder system worked well, while others were too busy to follow up consistently. A few community outreach events were canceled when planned partners were unavailable.",
+       keywords:["translated","languages","email","canceled","reminder","follow up","busy","fidelity","inconsistent","varied","parent session","outreach","partner","gaps","delivery"]},
+      {label:"Maintenance",letter:"M",
+       definition:"Maintenance refers to the extent to which a program is sustained over time at both the individual and organizational level. It asks: did the intervention continue beyond the pilot period, without reliance on outside funding or special support?",
+       q:"What is the Maintenance of the intervention?",
+       hint:"Which sites expressed interest in continuing? What conditions made sustainability uncertain?",
+       answer:"Maintenance is reflected in several school administrators and clinic leaders expressing interest in continuing the program, particularly in sites where vaccination rates improved noticeably. However, some participants questioned whether the outreach model could be sustained without dedicated coordination and funding, suggesting sustainability depended on conditions not yet secured.",
+       keywords:["continue","interest","sustained","coordination","funding","administrators","clinic leaders","outreach","model","year","improvement","rates","sustained","questioned"]}
+    ]
+  },
+
+  /* ── 3: Radon ── */
+  {
+    title:"Radon Testing & Mitigation Outreach",
+    pill:"Environmental health",
+    pillStyle:"background:#FAEEDA;color:#854F0B",
+    accentColor:"#BA7517",
+    accentLight:"#FAEEDA",
+    accentDark:"#412402",
+    eyebrow:"Scenario — Radon Testing & Mitigation Outreach Program",
+    scenario:`<p>A radon testing and mitigation outreach program was launched to increase household testing and encourage action in homes with elevated radon levels. The program included public education materials, free or low-cost radon test kits, community workshops, and referral information for mitigation services. Public health staff partnered with neighborhood organizations, libraries, and local clinics to help spread awareness. Some partners promoted the program actively and distributed test kits at community events, while others participated more passively by simply displaying materials.</p>
+<p>During the campaign, household awareness of radon risk appeared to increase, and requests for test kits rose sharply compared with the previous year. Many households completed testing, and the public health team found that residents who attended community workshops were more likely to return their kits. However, participation was not evenly distributed. Homeowners in higher-income neighborhoods were more likely to use the kits and follow up on results, while renters and lower-income households were less likely to complete testing. Among homes with elevated radon levels, mitigation rates improved but remained much lower than testing rates, largely because of cost, landlord-related barriers, and uncertainty about next steps.</p>
+<p>Implementation also varied across partner sites. Some organizations distributed kits consistently and explained the process clearly, while others ran out of supplies or lacked staff to answer questions. Workshop attendance was strong in some communities but low in others. Public health staff noted that follow-up systems for households with high radon levels were inconsistent and that referrals for mitigation services were easier to access in some neighborhoods than others. By the end of the first year, several organizations said they wanted to continue participating, particularly those that saw strong community response. Still, some partners stepped back once the initial campaign ended, and public health leaders began asking whether the program could be maintained in a way that did not depend so heavily on short-term funding and volunteer enthusiasm.</p>`,
+    dims:[
+      {label:"Reach",letter:"R",
+       definition:"Reach refers to the proportion and representativeness of individuals who participate in or are affected by an intervention. It asks: who was actually exposed to the program, and were any groups systematically left out or underserved?",
+       q:"What is the Reach of this intervention?",
+       hint:"Who was more or less likely to participate in testing? Were renters and lower-income households equally reached?",
+       answer:"Reach was uneven across the target population. Homeowners in higher-income neighborhoods were more likely to use test kits and follow up on results, while renters and lower-income households were less likely to complete testing. This indicates that those at higher structural risk — particularly renters with less control over home remediation — were less reached by the program.",
+       keywords:["homeowner","renter","lower-income","higher-income","uneven","participation","testing","reach","neighborhoods","income","barriers","less likely","complete","distribution"]},
+      {label:"Effectiveness",letter:"E",
+       definition:"Effectiveness refers to the impact of an intervention on important outcomes, including potential negative effects. It asks: did the program produce meaningful changes in behavior, knowledge, or health status among those who participated?",
+       q:"What is the Effectiveness of the program?",
+       hint:"Did awareness, testing rates, or mitigation rates change? Where were outcomes strongest?",
+       answer:"Effectiveness is shown in the increase in household awareness of radon risk and a sharp rise in requests for test kits compared to the previous year. Residents who attended workshops were more likely to return their kits. Mitigation rates improved among homes with elevated radon levels, though they remained much lower than testing rates due to cost, landlord barriers, and uncertainty about next steps.",
+       keywords:["awareness","test kits","requests","workshops","returned","mitigation","elevated","rate","improved","increase","outcome","radon","behavior","action","rose","sharp"]},
+      {label:"Adoption",letter:"A",
+       definition:"Adoption refers to the uptake of an intervention by settings, institutions, or staff. It asks: which organizations or decision-makers chose to participate, and what proportion of all eligible sites were included?",
+       q:"What is the Adoption of the intervention?",
+       hint:"Which organizations partnered with the program? How did their levels of engagement differ?",
+       answer:"Adoption is reflected in public health staff partnering with neighborhood organizations, libraries, and local clinics to spread awareness. However, adoption was uneven: some partners promoted the program actively and distributed kits at community events, while others participated passively by only displaying materials. This variation suggests different levels of institutional commitment across adopting sites.",
+       keywords:["partner","organizations","libraries","clinics","active","passive","distributed","materials","community","events","display","engagement","uneven","commitment","adoption"]},
+      {label:"Implementation",letter:"I",
+       definition:"Implementation refers to the consistency and fidelity with which an intervention is delivered as intended. It asks: were all program components carried out, by whom, with what completeness, and were there significant deviations?",
+       q:"What is the Implementation of the intervention?",
+       hint:"Were kits distributed consistently? Were follow-up systems in place for high-radon homes?",
+       answer:"Implementation varied across partner sites. Some organizations distributed kits consistently and explained the process clearly, while others ran out of supplies or lacked staff to answer questions. Workshop attendance was uneven across communities. Follow-up systems for households with high radon levels were inconsistent, and access to mitigation referrals varied by neighborhood, reflecting significant gaps in fidelity across the program.",
+       keywords:["supplies","ran out","staff","questions","workshop","attendance","follow-up","inconsistent","referral","mitigation","fidelity","neighborhood","vary","gaps","delivery","access"]},
+      {label:"Maintenance",letter:"M",
+       definition:"Maintenance refers to the extent to which a program is sustained over time at both the individual and organizational level. It asks: did the intervention continue beyond the pilot period, without reliance on outside funding or special support?",
+       q:"What is the Maintenance of the intervention?",
+       hint:"Which partners continued after the campaign? What conditions made long-term sustainability uncertain?",
+       answer:"Maintenance is reflected in several organizations expressing interest in continuing, particularly those that saw strong community response. However, some partners stepped back once the initial campaign ended. Public health leaders questioned whether the program could be maintained without depending so heavily on short-term funding and volunteer enthusiasm, indicating fragile sustainability for the program as a whole.",
+       keywords:["continue","stepped back","funding","volunteer","enthusiasm","campaign","sustained","maintain","short-term","organizations","interest","community response","leaders","year"]}
+    ]
+  }
+];
+
+/* Dimension definitions (shared across programs for display styling) */
+const DIM_COLORS = [
+  {dot:"#185FA5"}, // Reach
+  {dot:"#1D9E75"}, // Effectiveness
+  {dot:"#D85A30"}, // Adoption
+  {dot:"#BA7517"}, // Implementation
+  {dot:"#8A3FAF"}  // Maintenance
+];
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let activeProg = null;
+let current = 0;
+let revealed = [], answers = [], feedbacks = [];
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0});
+}
+
+function goToLanding(){
+  showView('landing');
+}
+
+function launchActivity(progIdx){
+  activeProg = PROGRAMS[progIdx];
+  current = 0;
+  revealed = [false,false,false,false,false];
+  answers  = ["","","","",""];
+  feedbacks= [null,null,null,null,null];
+
+  // Populate header
+  document.getElementById('activity-title').textContent = activeProg.title;
+  const pill = document.getElementById('activity-pill');
+  pill.textContent = activeProg.pill;
+  pill.style.cssText = activeProg.pillStyle;
+
+  // Populate scenario
+  document.getElementById('scenario-eyebrow').textContent = activeProg.eyebrow;
+  document.getElementById('scenario-text').innerHTML = activeProg.scenario;
+
+  // Reset right panel
+  document.getElementById('idle-view').style.display='flex';
+  document.getElementById('active-view').style.display='none';
+  document.getElementById('reflection-view').style.display='none';
+  document.getElementById('begin-btn').style.display='inline-flex';
+
+  // Set progress color to program accent
+  document.getElementById('prog-fill').style.background = activeProg.accentColor;
+
+  showView('activity');
+  scrollTop();
+}
+
+/* ═══════════════════════════════════════
+   ACTIVITY FLOW
+═══════════════════════════════════════ */
+function startActivity(){
+  document.getElementById('idle-view').style.display='none';
+  document.getElementById('active-view').style.display='block';
+  document.getElementById('begin-btn').style.display='none';
+  renderQ();
+}
+
+function restartActivity(){
+  current=0;
+  revealed=[false,false,false,false,false];
+  answers=["","","","",""];
+  feedbacks=[null,null,null,null,null];
+  document.getElementById('reflection-view').style.display='none';
+  document.getElementById('active-view').style.display='block';
+  renderQ(); scrollTop();
+}
+
+function scrollTop(){ document.getElementById('right-col').scrollTo({top:0,behavior:'smooth'}); }
+
+function renderQ(){
+  if(!activeProg) return;
+  const d   = activeProg.dims[current];
+  const pct = ((current+1)/5)*100;
+  const ac  = activeProg.accentColor;
+  const al  = activeProg.accentLight;
+  const ad  = activeProg.accentDark;
+
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-label').textContent = 'Question '+(current+1)+' of 5';
+
+  // Step dots
+  let dots='';
+  for(let i=0;i<5;i++){
+    const isActive = i===current, isDone = i<current;
+    const bg = isActive ? ac : (isDone ? '#639922' : '#C8C6BC');
+    const scale = isActive ? 'transform:scale(1.3)' : '';
+    dots+=`<div style="width:8px;height:8px;border-radius:50%;background:${bg};transition:background .3s,transform .2s;${scale}" title="${activeProg.dims[i].label}"></div>`;
+  }
+  document.getElementById('step-dots').innerHTML = dots;
+
+  const rev = revealed[current];
+  const fb  = feedbacks[current];
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card">
+      <div class="dim-definition" style="background:${al};border-color:${ac}33">
+        <div class="dim-def-icon" style="background:${ac}">${d.letter}</div>
+        <div>
+          <div class="dim-def-title" style="color:${ad}">What is ${d.label}?</div>
+          <div class="dim-def-body" style="color:${ac}">${d.definition}</div>
+        </div>
+      </div>
+      <div class="q-card-body">
+        <span class="dim-badge" style="background:${al};color:${ac}">${d.label}</span>
+        <div class="q-text">${d.q}</div>
+        <div class="hint-text"><strong>Hint:</strong> ${d.hint}</div>
+        <textarea id="ans-ta" placeholder="Type your answer here, using specific evidence from the scenario…" oninput="saveAns(this.value)">${answers[current]}</textarea>
+        <div class="action-row">
+          ${!fb && !rev ? `<button class="btn btn-ghost" style="color:${ac};border-color:${al}" onclick="getFeedback()">Get feedback on my answer</button>` : ''}
+          ${fb && !fb.loading && !rev ? `<button class="btn btn-ghost" style="color:${ac};border-color:${al};font-size:12px;padding:6px 12px" onclick="getFeedback()">Try again</button>` : ''}
+          <div class="spacer"></div>
+          ${!rev ? `<button class="btn btn-ghost" style="color:${ac};border-color:${al}" onclick="revealAnswer()">Reveal suggested answer</button>` : ''}
+        </div>
+        ${fb ? renderFeedbackHtml(fb) : ''}
+        ${rev ? `
+          <div class="answer-reveal" style="background:${al};border-left-color:${ac}">
+            <div class="answer-reveal-label" style="color:${ac}">Suggested answer</div>
+            <p style="color:${ad}">${d.answer}</p>
+          </div>` : ''}
+        <div class="nav-row">
+          <button class="btn btn-outline" onclick="prevQ()" ${current===0?'disabled':''}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Previous
+          </button>
+          <div class="spacer"></div>
+          ${current<4
+            ? `<button class="btn btn-primary" style="background:${ac};border-color:${ac}" onmouseover="this.style.background='${ad}'" onmouseout="this.style.background='${ac}'" onclick="nextQ()">Next <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>`
+            : `<button class="btn btn-primary" style="background:${ac};border-color:${ac}" onmouseover="this.style.background='${ad}'" onmouseout="this.style.background='${ac}'" onclick="showReflection()">Finish <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></button>`
+          }
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderFeedbackHtml(fb){
+  if(fb.loading) return `<div class="feedback-box loading"><div class="spinner"></div><span>Analysing your answer…</span></div>`;
+  const map = {strong:['positive','Good answer — key evidence identified'],partial:['partial','Partially there — be more specific'],missing:['missing','Key evidence not yet captured']};
+  const [cls,lbl] = map[fb.quality];
+  return `<div class="feedback-box ${cls}"><div class="feedback-label">${lbl}</div>${fb.text}</div>`;
+}
+
+/* ── Scoring ── */
+function getFeedback(){
+  const ans = answers[current].trim();
+  if(!ans){ alert('Please write an answer before requesting feedback.'); return; }
+  feedbacks[current]={loading:true}; renderQ();
+  setTimeout(()=>{ feedbacks[current]=scoreFeedback(current,ans); renderQ(); },850);
+}
+
+function scoreFeedback(idx,ans){
+  const d   = activeProg.dims[idx];
+  const low = ans.toLowerCase();
+  const hits = d.keywords.filter(kw=>low.includes(kw.toLowerCase()));
+  const ratio = hits.length / d.keywords.length;
+  if(ratio>=0.28){
+    return {quality:'strong', text:`Your answer identifies the key evidence for <strong>${d.label}</strong>. You've pointed to specific details from the scenario. Compare with the suggested answer below to see if anything is worth adding.`};
+  } else if(ratio>=0.1){
+    return {quality:'partial', text:`You're on the right track for <strong>${d.label}</strong>, but the answer could be more precise. Try to name specific figures, observations, or groups from the scenario rather than describing things in general terms.`};
+  } else {
+    return {quality:'missing', text:`The answer doesn't yet capture the key evidence for <strong>${d.label}</strong>. Re-read the scenario with this in mind: <em>${d.hint}</em> Revise your answer, or reveal the suggested response to compare.`};
+  }
+}
+
+/* ── Nav ── */
+function saveAns(v){ answers[current]=v; }
+function revealAnswer(){ revealed[current]=true; renderQ(); }
+function nextQ(){ if(current<4){ current++; renderQ(); scrollTop(); } }
+function prevQ(){ if(current>0){ current--; renderQ(); scrollTop(); } }
+function showReflection(){
+  document.getElementById('active-view').style.display='none';
+  document.getElementById('reflection-view').style.display='block';
+  scrollTop();
+}
+function goBackToQ(){
+  document.getElementById('reflection-view').style.display='none';
+  document.getElementById('active-view').style.display='block';
+  renderQ(); scrollTop();
+}
+</script>
+</body>
+</html>
